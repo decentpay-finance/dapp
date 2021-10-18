@@ -19,23 +19,27 @@ function App() {
   }
   function setActionkArea(_setActionArea){
     setActionArea(_setActionArea);
-  }
+  };
+  
   function homeNavHomeButtonClick(){
     setPageHeader(HomeHeader);
     setPageNavigator(HomeNavigator)
     setWorkArea(HomeWorkArea);
     setActionkArea(HomeActionArea);
-  }
+  };
+
   function receiveButtonClick(){
     setPageHeader(ReceiveHeader);
     setPageWorkArea(ReceiveWorkArea);
     setActionkArea(ReceiveActionArea);
-  }
+  };
+
 
   function payButtonClick(){
     setPageHeader(PayHeader);
     setPageWorkArea(PayWorkArea)
-  }
+  };
+
   function  HomeHeader(){
     return (
       <div>
@@ -43,21 +47,24 @@ function App() {
         <h4>Home</h4>
       </div>
     )
-  }
+  };
+
   function  ReceiveHeader(){
     return (
       <div>
         <h4>Receive</h4>
       </div>
     )
-  }
+  };
+
   function  HomeWorkArea(){
     return (
       <div>
         <h4>Home WorkArea</h4>
       </div>
     )
-  }
+  };
+
   function HomeActionArea(){
     return (
       <div>
@@ -67,7 +74,8 @@ function App() {
       </List>
       </div>
     )
-  }
+  };
+
   function  ReceiveActionArea(){
     return (
       <div>
@@ -77,14 +85,15 @@ function App() {
       </List>
       </div>
     )
-  }
+  };
+
   function ReceiveWorkArea(){
     return (
       <div>
         <h4>Receive WorkArea</h4>
       </div>
     )
-  }
+  };
   
   function  PayHeader(){
     return (
@@ -92,14 +101,16 @@ function App() {
         <h4>Pay</h4>
       </div>
     )
-  }
+  };
+
   function PayWorkArea(){
     return (
       <div>
         <h4>Pay WorkArea</h4>
       </div>
     )
-  }
+  };
+
   function HomeNavigator(){
         return (
           <div>
@@ -114,7 +125,7 @@ function App() {
           </Box>
           </div>
         );
-  }
+  };
   return (
     <div className="App" style={{height:'100%'}}>
       <div style={{height:'150px', padding:'10px', backgroundColor:'#b5b5b5', marginBottom:'-32px'}}>{header}</div>
@@ -143,6 +154,7 @@ const workAreaBG={
   margin:'0px 15px 5px 15px',
   borderRadius:'0px 0px 30px 30px',
 };
+
 const actionAreaBG={
   height:'50px',
   padding:'0px 5px 13px 5px',
@@ -150,6 +162,7 @@ const actionAreaBG={
   margin:'0px 15px 0px 15px',
   borderRadius:'30px 30px 30px 30px',
 };
+
 const navButtonStyle={  
   margin:'5px',
   fontWeight: 400,
@@ -160,4 +173,5 @@ const navButtonStyle={
   borderRadius:'20px 20px 20px 20px',
   boxShadow: "0px 0px 10px #87fffa",
 };
+
 export default App;
