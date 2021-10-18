@@ -1,14 +1,19 @@
-import { Button, List } from "@mui/material";
-import { useState } from "react";
+import {Button, List } from "@mui/material";
+import { useState, useEffect } from "react";
 import { Box } from "@mui/system";
+import  Moralis  from "moralis";
+import { useMoralis } from "react-moralis";
 function App() {
-  const [header,setHeader] = useState(HomeHeader);
-  const [navigator,setNavigator] = useState(HomeNavigator);
-  const [workarea,setWorkArea] = useState(HomeWorkArea);
-  const [actionArea,setActionArea] = useState(HomeActionArea);
-
+  const { authenticate, isAuthenticated, user, logout } = useMoralis();
+  const [header,setHeader] = useState(HomeHeader());
+  const [navigator, setNavigator] = useState(HomeNavigator);
+  const [workarea, setWorkArea] = useState(HomeWorkArea);
+  const [actionArea, setActionArea] = useState(HomeActionArea);
   function setPageHeader(_header){
     setHeader(_header);
+  }
+  function setWalletAddress(addr){
+    setPageHeader(HomeHeader(addr));
   }
   function setPageNavigator(_navigator){
     setNavigator(_navigator);
@@ -20,9 +25,9 @@ function App() {
   function setActionkArea(_setActionArea){
     setActionArea(_setActionArea);
   };
-  
+
   function homeNavHomeButtonClick(){
-    setPageHeader(HomeHeader);
+    setPageHeader(HomeHeader());
     setPageNavigator(HomeNavigator)
     setWorkArea(HomeWorkArea);
     setActionkArea(HomeActionArea);
@@ -40,11 +45,36 @@ function App() {
     setPageWorkArea(PayWorkArea)
   };
 
-  function  HomeHeader(){
+  const [width, setWidth] = useState(window.innerWidth);
+
+function handleWindowSizeChange() {
+    setWidth(window.innerWidth);
+}
+useEffect(() => {
+    window.addEventListener('resize', handleWindowSizeChange);
+    return () => {
+        window.removeEventListener('resize', handleWindowSizeChange);
+    }
+}, []);
+
+async function walletConnect(){
+  let isMobile = (width <= 768);
+  if(isMobile){
+    await Moralis.authenticate({ provider: "walletconnect", chainId: 56 })
+    setWalletAddress(user.get("ethAddress"))
+    console.log(user.get('ethAddress'));
+  }else{
+    await Moralis.authenticate().then(function (user) { 
+      setWalletAddress(user.get('ethAddress'));
+      console.log(user.get('ethAddress'));
+    })
+  }
+}
+function HomeHeader(wallet){  
     return (
       <div>
-      <Button variant="contained" size="small" >Show Asset</Button>
-        <h4>Home</h4>
+        <Button variant="contained" size="small" onClick={walletConnect}>Wallet Connect</Button>
+        <h4>{wallet}</h4>
       </div>
     )
   };
@@ -64,14 +94,21 @@ function App() {
       </div>
     )
   };
+  function AuthButton(){
 
-  function HomeActionArea(){
+    if (!isAuthenticated) {
+      return <Button variant="contained" style={navButtonStyle} onClick={()=>authenticate()}>Connect</Button>;
+    }else{
+      return <Button variant="contained" style={navButtonStyle} onClick={()=>logout()}>Disconnect</Button>;
+    }
+  }
+  function HomeActionArea(){   
     return (
       <div>
-      <List style={{display: 'flex', alignItems: 'center'}}>
-        <Button variant="contained" style={navButtonStyle} onClick={homeNavHomeButtonClick}>Tokens</Button>
-        <Button variant="contained" style={navButtonStyle} onClick={homeNavHomeButtonClick}>Connect</Button>
-      </List>
+        <List style={{display: 'flex', alignItems: 'center'}}>
+          <Button variant="contained" style={navButtonStyle} onClick={homeNavHomeButtonClick}>Tokens</Button>
+          <AuthButton />
+        </List>
       </div>
     )
   };
