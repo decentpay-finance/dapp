@@ -1,8 +1,6 @@
-import { Button, List, Toolbar } from "@mui/material";
-import style from "@emotion/styled";
+import { Button, List } from "@mui/material";
 import { useState } from "react";
 import { Box } from "@mui/system";
-import AppBar from '@material-ui/core/AppBar';
 function App() {
   const [header,setHeader] = useState(HomeHeader);
   const [navigator,setNavigator] = useState(HomeNavigator);
@@ -129,12 +127,6 @@ function App() {
   );
 }
 
-const appBar = {
-  backgroundColor:'#FFF',
-  border:'0px',
-  height:'60px',
-  //filter: 'drop-shadow(0px 0px 1px #dfa)',
-}
 const navButtonBG={
   backgroundColor:"#2b2b2b",
   borderRadius:'30px 30px 0px 0px',
