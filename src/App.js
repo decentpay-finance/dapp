@@ -59,7 +59,7 @@ const App = () => {
         const price = 480;
         return price;
   }*/
-  React.useEffect((user) => {    
+  React.useEffect(() => {    
     if(isAuthenticated){
         Moralis.start({ serverUrl, appId });
         async function getNativeBal(){           
@@ -79,7 +79,7 @@ const App = () => {
        }
        getNativeBal();
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated,user]);
     return (
         <Box  sx={{
             mx: 'auto',
