@@ -49,13 +49,12 @@ const tabStyle={
     boxShadow: "1px 10px 30px #BDC3C7",
 }
 export default function BasicTabs(prop) {
-    const {windowWidth, windowHeight}=getWindowDimensions();
+    const {width, windowHeight}=getWindowDimensions();
   
     async function getWindowDimensions() {
-      const { innerWidth: width, innerHeight: height } = await window;
+      const { innerWidth: width} =  window;
       return {
         width,
-        height
       };
     }
     const {   user, logout} = useMoralis();
@@ -74,13 +73,13 @@ export default function BasicTabs(prop) {
           <Tab label="Account" {...a11yProps(3)} style={tabStyle}/>
         </Tabs>
       </Box>
-      <TabPanel value={value} index={0} style={{height:'300px', width:windowWidth+'px',overflow: 'scroll'}} >
+      <TabPanel value={value} index={0} style={{height:'300px', width:width+'px',overflow: 'scroll'}} >
         <Transacton transactions={prop.transactions} user={user}/>
       </TabPanel>
-      <TabPanel value={value} index={1} style={{height:'300px', width:windowWidth+'px',overflow: 'scroll'}}>
+      <TabPanel value={value} index={1} style={{height:'300px', width:width+'px',overflow: 'scroll'}}>
         <AssetList tokens={prop.tokens}/>
       </TabPanel>
-      <TabPanel value={value} index={2} style={{height:'300px', width:windowWidth+'px'}}>
+      <TabPanel value={value} index={2} style={{height:'300px', width:width+'px'}}>
         <h2>Coming Soon</h2>
       </TabPanel>
       <TabPanel value={value} index={3} style={{height:'300px'}}>
