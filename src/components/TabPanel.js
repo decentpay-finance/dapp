@@ -49,7 +49,7 @@ const tabStyle={
     boxShadow: "1px 10px 30px #BDC3C7",
 }
 export default function BasicTabs(prop) {
-    const {width, windowHeight}=getWindowDimensions();
+    const {width}=getWindowDimensions();
   
     async function getWindowDimensions() {
       const { innerWidth: width} =  window;
