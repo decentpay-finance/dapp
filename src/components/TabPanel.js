@@ -73,16 +73,16 @@ export default function BasicTabs(prop) {
           <Tab label="Account" {...a11yProps(3)} style={tabStyle}/>
         </Tabs>
       </Box>
-      <TabPanel value={value} index={0} style={{height:'300px', width:width+'px',overflow: 'scroll'}} >
+      <TabPanel value={value} index={0} style={{height:'400px', width:width+'px',overflow: 'scroll'}} >
         <Transacton transactions={prop.transactions} user={user}/>
       </TabPanel>
-      <TabPanel value={value} index={1} style={{height:'300px', width:width+'px',overflow: 'scroll'}}>
+      <TabPanel value={value} index={1} style={{height:'400px', width:width+'px',overflow: 'scroll'}}>
         <AssetList tokens={prop.tokens}/>
       </TabPanel>
-      <TabPanel value={value} index={2} style={{height:'300px', width:width+'px'}}>
+      <TabPanel value={value} index={2} style={{height:'400px', width:width+'px'}}>
         <h2>Coming Soon</h2>
       </TabPanel>
-      <TabPanel value={value} index={3} style={{height:'300px'}}>
+      <TabPanel value={value} index={3} style={{height:'400px'}}>
         <Button variant="contained" onClick={()=>logout()}>Logout</Button>
       </TabPanel>
     </Box>

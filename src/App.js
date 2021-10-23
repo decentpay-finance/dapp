@@ -9,6 +9,7 @@ import logo from './img/logo.png';
 import NestedModal from './components/NestedModal';
 import BasicTabs from './components/TabPanel';
 import {isMobile} from 'react-device-detect';
+import StringUtil from './utils/StringUtil';
 const App = () => {
     //const [balance, setBalance] = useState('0.0');  
     const [nativeBalance , setNativeBalance] = useState('0.0');  
@@ -99,6 +100,8 @@ const App = () => {
             const userTransactions = await Moralis.Web3API.account.getTokenTransfers(transOptions);
             //const bnbPrice = getTokenPrice('0xB8c77482e45F1F44dE1745F52C74426C631bDD52', 'bsc','PancakeSwapv2');
             seTokens(tokensList);
+            
+  
             //setBalance((parseFloat(accounts.balance).toFixed(2)));
             setTransactions(userTransactions.result);
        }
@@ -133,7 +136,7 @@ const App = () => {
                     borderRadius:'30px',
                     boxShadow: "1px 3px 60px #BDC3C7",
                 }}>
-                {user.get('ethAddress')}
+                {'Address: ' + StringUtil.shortenWallet(user.get('ethAddress'))}
             </Box>
             
             <h3 style={{paddingBottom:'10px', fontWeight:600}}>{nativeBalance} BNB</h3>           
