@@ -1,214 +1,155 @@
-import {Button, List } from "@mui/material";
-import { useState, useEffect } from "react";
-import { Box } from "@mui/system";
-import  Moralis  from "moralis";
-import { useMoralis } from "react-moralis";
-function App() {
-  const { authenticate, isAuthenticated, user, logout } = useMoralis();
-  const [header,setHeader] = useState(HomeHeader());
-  const [navigator, setNavigator] = useState(HomeNavigator);
-  const [workarea, setWorkArea] = useState(HomeWorkArea);
-  const [actionArea, setActionArea] = useState(HomeActionArea);
-  function setPageHeader(_header){
-    setHeader(_header);
-  }
-  function setWalletAddress(addr){
-    setPageHeader(HomeHeader(addr));
-  }
-  function setPageNavigator(_navigator){
-    setNavigator(_navigator);
-  }
 
-  function setPageWorkArea(_setWorkArea){
-    setWorkArea(_setWorkArea);
-  }
-  function setActionkArea(_setActionArea){
-    setActionArea(_setActionArea);
+import Button from '@mui/material/Button';
+import {Box } from '@mui/system';
+import Moralis from 'moralis';
+import { useState } from 'react';
+import { useMoralis } from 'react-moralis';
+import * as React from 'react';
+import logo from './img/logo.png'; 
+import NestedModal from './components/NestedModal';
+import BasicTabs from './components/TabPanel';
+const App = () => {
+    const [balance, setBalance] = useState('0.0');  
+    const [nativeBalance , setNativeBalance] = useState('0.0');  
+    const [tokens , seTokens] = useState();  
+    const [transactions , setTransactions] = useState();  
+    const { authenticate, isAuthenticated, user} = useMoralis();
+    const [openPayState, setOpenPayState] = React.useState(false);
+    const [openSwapState, setOpenSwapState] = React.useState(false);
+    const [openSendState, setOpenSendState] = React.useState(false);
+    const [openReceiveState, setOpenReceiveState] = React.useState(false);
+    document.body.style.backgroundColor = "#BDC3C7";
+    const appId="3fJo4YOfynXdzjfLh29lnHSQY5ISVX3CfuXkEgYu";
+    const serverUrl = "https://rb23g45mqtnd.moralishost.com:2053/server";
+
+      
+  const handleOpenPay = () => {
+    setOpenPayState(true);
+  };
+  const handleClosePay = () => {
+    setOpenPayState(false);
+  };
+  const handleOpenSwap = () => {
+    setOpenSwapState(true);
+  };
+  const handleCloseSwap = () => {
+    setOpenSwapState(false);
+  };
+  const handleOpenSend = () => {
+    setOpenSendState(true);
+  };
+  const handleCloseSend = () => {
+    setOpenSendState(false);
+  };
+  const handleOpenReceive = () => {
+    setOpenReceiveState(true);
+  };
+  const handleCloseReceive = () => {
+    setOpenReceiveState(false);
   };
 
-  function homeNavHomeButtonClick(){
-    setPageHeader(HomeHeader());
-    setPageNavigator(HomeNavigator)
-    setWorkArea(HomeWorkArea);
-    setActionkArea(HomeActionArea);
-  };
-
-  function receiveButtonClick(){
-    setPageHeader(ReceiveHeader);
-    setPageWorkArea(ReceiveWorkArea);
-    setActionkArea(ReceiveActionArea);
-  };
-
-
-  function payButtonClick(){
-    setPageHeader(PayHeader);
-    setPageWorkArea(PayWorkArea)
-  };
-
-  const [width, setWidth] = useState(window.innerWidth);
-
-function handleWindowSizeChange() {
-    setWidth(window.innerWidth);
-}
-useEffect(() => {
-    window.addEventListener('resize', handleWindowSizeChange);
-    return () => {
-        window.removeEventListener('resize', handleWindowSizeChange);
+  async function getTokenPrice(address, chain, exchange){
+            //Get token price on PancakeSwap v2 BSC
+            const options = {
+            address: address,
+            chain: chain,
+            exchange: exchange
+        };
+        const price = await Moralis.Web3API.token.getTokenPrice(options);
+  }
+  React.useEffect(() => {    
+    if(isAuthenticated){
+        Moralis.start({ serverUrl, appId });
+        async function getNativeBal(){           
+            const accounts = await Moralis.Web3API.account.getNativeBalance({
+                "address": user.get('ethAddress'),
+                "chain": 'bsc'
+            });
+            setNativeBalance(Moralis.Units.FromWei(accounts.balance));        
+            const balOptions = { chain: 'bsc', address: user.get('ethAddress')}       
+            const tokensList = await Moralis.Web3API.account.getTokenBalances(balOptions);
+            const transOptions = { chain: 'bsc', address: user.get('ethAddress'), from_block: "0"} 
+            const userTransactions = await Moralis.Web3API.account.getTokenTransfers(transOptions);
+            const bnbPrice = getTokenPrice('0xB8c77482e45F1F44dE1745F52C74426C631bDD52', 'bsc','PancakeSwapv2');
+            seTokens(tokensList);
+            setBalance(bnbPrice * accounts.balance);
+            setTransactions(userTransactions.result);
+       }
+       getNativeBal();
     }
-}, []);
-
-async function walletConnect(){
-  let isMobile = (width <= 768);
-  if(isMobile){
-    await Moralis.authenticate({ provider: "walletconnect", chainId: 56 })
-    setWalletAddress(user.get("ethAddress"))
-    console.log(user.get('ethAddress'));
-  }else{
-    await Moralis.authenticate().then(function (user) { 
-      setWalletAddress(user.get('ethAddress'));
-      console.log(user.get('ethAddress'));
-    })
-  }
-}
-function HomeHeader(wallet){  
+  }, [isAuthenticated]);
     return (
-      <div>
-        <Button variant="contained" size="small" onClick={walletConnect}>Wallet Connect</Button>
-        <h4>{wallet}</h4>
-      </div>
-    )
-  };
-
-  function  ReceiveHeader(){
-    return (
-      <div>
-        <h4>Receive</h4>
-      </div>
-    )
-  };
-
-  function  HomeWorkArea(){
-    return (
-      <div>
-        <h4>Home WorkArea</h4>
-      </div>
-    )
-  };
-  function AuthButton(){
-
-    if (!isAuthenticated) {
-      return <Button variant="contained" style={navButtonStyle} onClick={()=>authenticate()}>Connect</Button>;
-    }else{
-      return <Button variant="contained" style={navButtonStyle} onClick={()=>logout()}>Disconnect</Button>;
-    }
-  }
-  function HomeActionArea(){   
-    return (
-      <div>
-        <List style={{display: 'flex', alignItems: 'center'}}>
-          <Button variant="contained" style={navButtonStyle} onClick={homeNavHomeButtonClick}>Tokens</Button>
-          <AuthButton />
-        </List>
-      </div>
-    )
-  };
-
-  function  ReceiveActionArea(){
-    return (
-      <div>
-      <List style={{display: 'flex', alignItems: 'center'}}>
-        <Button variant="contained" style={navButtonStyle} onClick={homeNavHomeButtonClick}>Cancel</Button>
-        <Button variant="contained" style={navButtonStyle} onClick={homeNavHomeButtonClick}>Next</Button>
-      </List>
-      </div>
-    )
-  };
-
-  function ReceiveWorkArea(){
-    return (
-      <div>
-        <h4>Receive WorkArea</h4>
-      </div>
-    )
-  };
-  
-  function  PayHeader(){
-    return (
-      <div>
-        <h4>Pay</h4>
-      </div>
-    )
-  };
-
-  function PayWorkArea(){
-    return (
-      <div>
-        <h4>Pay WorkArea</h4>
-      </div>
-    )
-  };
-
-  function HomeNavigator(){
-        return (
+        <Box  sx={{
+            mx: 'auto',
+            bgcolor: '#E5E7E9',
+            color: '#000',
+            width: '100%',
+            maxWidth:'500px',
+            minWidth:'400px',
+            p: 1,
+            m: 1,
+            textAlign: 'center',
+            borderRadius:'30px'
+          }}>
           <div>
-          <Box sx={{ '& button': { m: 1 } }} style={{justifyContent:"center",
-  alignItems:"center"}}>
-          <List style={{display: 'flex', alignItems: 'center'}}>
-            <Button style={navButtonStyle} onClick={homeNavHomeButtonClick}>Home</Button>
-            <Button style={navButtonStyle} onClick={receiveButtonClick}>Receive</Button>
-            <Button style={navButtonStyle} onClick={payButtonClick}>Pay</Button>
-            <Button style={navButtonStyle} onClick={payButtonClick}>Swap</Button>
-          </List>
-          </Box>
+            <img src={logo} alt="Logo" style={{width:'30px', marginBottom:'-10px'}}/>
+            <h2 style={{margin:'10px'}}>DecentPay</h2>
           </div>
-        );
-  };
-  return (
-    <div className="App" style={{height:'100%'}}>
-      <div style={{height:'150px', padding:'10px', backgroundColor:'#b5b5b5', marginBottom:'-32px'}}>{header}</div>
-      <div style={navButtonBG}>{navigator}</div>
-      <div style={{backgroundColor:"#454545", marginTop:'-30px', height:'563px'}}>
-        <div style={workAreaBG}>{workarea}</div>
-      <div style={actionAreaBG}>{actionArea}</div>
-      </div>
-    </div>
-  );
+          {isAuthenticated?
+          <div>
+                <Box  sx={{
+                mx: 'auto',
+                bgcolor: '#F8F9F9',
+                color: '#000',
+                p: 1,
+                m: 1,
+                textAlign: 'center',
+                borderRadius:'30px',
+                boxShadow: "1px 3px 60px #BDC3C7",
+            }}>{user.get('ethAddress')}
+            </Box>
+            <h1>{balance}</h1>
+            <h5 style={{paddingBottom:'10px', fontWeight:300}}>{nativeBalance} BNB</h5>           
+            <Box>
+                <Button style={buttonStyle} onClick={()=>handleOpenPay()}>Pay</Button>
+                <Button style={buttonStyle} onClick={()=>handleOpenSwap()}>Swap</Button>
+                <Button style={buttonStyle} onClick={()=>handleOpenSend()}>Send</Button>
+                <Button style={buttonStyle} onClick={()=>handleOpenReceive()}>Receive</Button>
+                
+                <NestedModal open={openPayState} handleClose={handleClosePay} title="Pay"/>
+                <NestedModal open={openSwapState} handleClose={handleCloseSwap} title="Swap"/>
+                <NestedModal open={openSendState} handleClose={handleCloseSend} title="Send"/>
+                <NestedModal open={openReceiveState} handleClose={handleCloseReceive} title="Receive"/>
+            </Box>
+            <Box sx={{
+                mx: 'auto',
+                bgcolor: '#F2F3F4',
+                color: '#000',
+                p: 1,
+                m: 1,
+                textAlign: 'center',
+                borderRadius:'30px',
+    boxShadow: "1px 3px 60px #BDC3C7"}}>
+                <BasicTabs tokens={tokens} transactions={transactions} user={user}/>
+            </Box>
+          </div>
+          :
+        <Button
+            style={buttonStyle} onClick={()=>authenticate()}>
+            Login With Wallet</Button>
+          }
+        </Box>
+    )
 }
-
-const navButtonBG={
-  backgroundColor:"#2b2b2b",
-  borderRadius:'30px 30px 0px 0px',
-  margin:'0px 15px 0px 15px',
-  padding:'0px 10px 0px 10px',
-  alignItems:'center',
-  
-};
-
-const workAreaBG={
-  height:'460px',
-  padding:'15px 30px 00px 30px',
-  backgroundColor:"#2b2b2b",
-  margin:'0px 15px 5px 15px',
-  borderRadius:'0px 0px 30px 30px',
-};
-
-const actionAreaBG={
-  height:'50px',
-  padding:'0px 5px 13px 5px',
-  backgroundColor:"#404040",
-  margin:'0px 15px 0px 15px',
-  borderRadius:'30px 30px 30px 30px',
-};
-
-const navButtonStyle={  
-  margin:'5px',
-  fontWeight: 400,
-  width: '200px',
-  backgroundColor:"#00857f",
-  color:'#FFF',
-  border:'1px solid #00c4bb',
-  borderRadius:'20px 20px 20px 20px',
-  boxShadow: "0px 0px 10px #87fffa",
-};
-
-export default App;
+const buttonStyle={    
+    fontSize:'.9em',
+    color:'black',
+    borderRadius:'30px',
+    backgroundColor: '#F8F9F9',
+    padding:'5px 20px 5px 20px',
+    fontWeight:400,
+    boxShadow: "1px 3px 40px #BDC3C7",
+    textTransform: 'capitalize',
+    margin:'5px'
+}
+export default App
