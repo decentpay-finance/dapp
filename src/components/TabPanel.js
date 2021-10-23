@@ -8,7 +8,6 @@ import { useMoralis } from 'react-moralis';
 import AssetList from './AssetList';
 import { Button } from '@material-ui/core';
 import React from 'react';
-import { maxHeight } from '@mui/system';
 import Transacton from './Transaction';
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -50,7 +49,7 @@ const tabStyle={
     margin:"0px 5px 0px 10px",
 }
 export default function BasicTabs(prop) {
-    const { authenticate, isAuthenticated, user, logout, isAuthenticating } = useMoralis();
+    const {   user, logout} = useMoralis();
     const [value, setValue] = React.useState(0);
     const handleChange = (event, newValue) => {
         setValue(newValue);

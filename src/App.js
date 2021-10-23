@@ -55,7 +55,9 @@ const App = () => {
             chain: chain,
             exchange: exchange
         };
-        const price = await Moralis.Web3API.token.getTokenPrice(options);
+        const price1 = await Moralis.Web3API.token.getTokenPrice(options);
+        const price = 480;
+        return price;
   }
   React.useEffect(() => {    
     if(isAuthenticated){
@@ -72,7 +74,7 @@ const App = () => {
             const userTransactions = await Moralis.Web3API.account.getTokenTransfers(transOptions);
             const bnbPrice = getTokenPrice('0xB8c77482e45F1F44dE1745F52C74426C631bDD52', 'bsc','PancakeSwapv2');
             seTokens(tokensList);
-            setBalance(bnbPrice * accounts.balance);
+            setBalance((parseFloat(accounts.balance).toFixed(2)));
             setTransactions(userTransactions.result);
        }
        getNativeBal();
@@ -98,24 +100,24 @@ const App = () => {
           {isAuthenticated?
           <div>
                 <Box  sx={{
-                mx: 'auto',
-                bgcolor: '#F8F9F9',
-                color: '#000',
-                p: 1,
-                m: 1,
-                textAlign: 'center',
-                borderRadius:'30px',
-                boxShadow: "1px 3px 60px #BDC3C7",
-            }}>{user.get('ethAddress')}
+                    mx: 'auto',
+                    bgcolor: '#F8F9F9',
+                    color: '#000',
+                    p: 1,
+                    m: 1,
+                    textAlign: 'center',
+                    borderRadius:'30px',
+                    boxShadow: "1px 3px 60px #BDC3C7",
+                }}>
+                {user.get('ethAddress')}
             </Box>
-            <h1>{balance}</h1>
+            <h1>${balance} USD</h1>
             <h5 style={{paddingBottom:'10px', fontWeight:300}}>{nativeBalance} BNB</h5>           
             <Box>
                 <Button style={buttonStyle} onClick={()=>handleOpenPay()}>Pay</Button>
                 <Button style={buttonStyle} onClick={()=>handleOpenSwap()}>Swap</Button>
                 <Button style={buttonStyle} onClick={()=>handleOpenSend()}>Send</Button>
-                <Button style={buttonStyle} onClick={()=>handleOpenReceive()}>Receive</Button>
-                
+                <Button style={buttonStyle} onClick={()=>handleOpenReceive()}>Receive</Button>                
                 <NestedModal open={openPayState} handleClose={handleClosePay} title="Pay"/>
                 <NestedModal open={openSwapState} handleClose={handleCloseSwap} title="Swap"/>
                 <NestedModal open={openSendState} handleClose={handleCloseSend} title="Send"/>

@@ -14,7 +14,7 @@ function AssetList(props) {
                 {props.tokens?(
                     props.tokens.map((token, index)=>{
                         //console.log(token)
-                        const {token_address,name,symbol,logo,thumbnail,decimals,balance }=token;
+                        const {name,symbol,decimals,balance }=token;
                         const bal = Moralis.Units.FromWei(balance, decimals);
                         return(
                             <ListItem>
