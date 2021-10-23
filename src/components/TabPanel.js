@@ -46,8 +46,8 @@ const tabStyle={
     backgroundColor:'#F2F3F4',
     borderRadius:"20px 20px 0px 0px",
     padding:'0px 10px 0px 10px',
-    margin:"30px 5px 0px 10px",
-    boxShadow: "1px 3px 60px #BDC3C7",
+    margin:"20px 5px 0px 10px",
+    boxShadow: "1px 10px 50px #BDC3C7",
 }
 export default function BasicTabs(prop) {
     const {   user, logout} = useMoralis();
@@ -62,7 +62,8 @@ export default function BasicTabs(prop) {
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" centered>
           <Tab label="Activity" {...a11yProps(0)} style={tabStyle} />
           <Tab label="Assets" {...a11yProps(1)} style={tabStyle}/>
-          <Tab label="Account" {...a11yProps(2)} style={tabStyle}/>
+          <Tab label="Trading" {...a11yProps(2)} style={tabStyle}/>
+          <Tab label="Account" {...a11yProps(3)} style={tabStyle}/>
         </Tabs>
       </Box>
       <TabPanel value={value} index={0} style={{height:'500px',overflow: 'scroll'}} >
@@ -72,6 +73,9 @@ export default function BasicTabs(prop) {
         <AssetList tokens={prop.tokens}/>
       </TabPanel>
       <TabPanel value={value} index={2} style={{height:'500px'}}>
+        <h2>Coming Soon</h2>
+      </TabPanel>
+      <TabPanel value={value} index={3} style={{height:'500px'}}>
         <Button variant="contained" onClick={()=>logout()}>Logout</Button>
       </TabPanel>
     </Box>

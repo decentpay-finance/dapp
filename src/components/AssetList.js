@@ -17,7 +17,7 @@ function AssetList(props) {
                         const {name,symbol,decimals,balance }=token;
                         const bal = Moralis.Units.FromWei(balance, decimals);
                         return(
-                            <ListItem style={{borderBottom:'1px solid '}}>
+                            <ListItem style={{borderBottom:'1px solid #D7DBDD'}}>
                             <ListItemAvatar>
                             <Avatar>
                                 <ImageIcon />

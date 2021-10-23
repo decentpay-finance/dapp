@@ -15,7 +15,7 @@ const Transacton = (props) => {
                         const avatarColor = direction==='Send'?'`red`':'`blue`';
                         if(value>0){
                             return(
-                                <ListItem>
+                                <ListItem style={{borderBottom:'1px solid #D7DBDD'}}>
                                 <ListItemAvatar>
                                 <Avatar style={{backgroundColor:avatarColor}}>
                                     {direction==='Send'?
