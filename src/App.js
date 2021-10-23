@@ -48,18 +48,18 @@ const App = () => {
     setOpenReceiveState(false);
   };
 
-  async function getTokenPrice(address, chain, exchange){
+  /*async function getTokenPrice(address, chain, exchange){
             //Get token price on PancakeSwap v2 BSC
             const options = {
             address: address,
             chain: chain,
             exchange: exchange
         };
-        const price1 = await Moralis.Web3API.token.getTokenPrice(options);
+        //const price1 = await Moralis.Web3API.token.getTokenPrice(options);
         const price = 480;
         return price;
-  }
-  React.useEffect(() => {    
+  }*/
+  React.useEffect((user) => {    
     if(isAuthenticated){
         Moralis.start({ serverUrl, appId });
         async function getNativeBal(){           
@@ -72,7 +72,7 @@ const App = () => {
             const tokensList = await Moralis.Web3API.account.getTokenBalances(balOptions);
             const transOptions = { chain: 'bsc', address: user.get('ethAddress'), from_block: "0"} 
             const userTransactions = await Moralis.Web3API.account.getTokenTransfers(transOptions);
-            const bnbPrice = getTokenPrice('0xB8c77482e45F1F44dE1745F52C74426C631bDD52', 'bsc','PancakeSwapv2');
+            //const bnbPrice = getTokenPrice('0xB8c77482e45F1F44dE1745F52C74426C631bDD52', 'bsc','PancakeSwapv2');
             seTokens(tokensList);
             setBalance((parseFloat(accounts.balance).toFixed(2)));
             setTransactions(userTransactions.result);
