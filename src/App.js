@@ -8,8 +8,9 @@ import * as React from 'react';
 import logo from './img/logo.png'; 
 import NestedModal from './components/NestedModal';
 import BasicTabs from './components/TabPanel';
+import {isMobile} from 'react-device-detect';
 const App = () => {
-    const [balance, setBalance] = useState('0.0');  
+    //const [balance, setBalance] = useState('0.0');  
     const [nativeBalance , setNativeBalance] = useState('0.0');  
     const [tokens , seTokens] = useState();  
     const [transactions , setTransactions] = useState();  
@@ -18,11 +19,13 @@ const App = () => {
     const [openSwapState, setOpenSwapState] = React.useState(false);
     const [openSendState, setOpenSendState] = React.useState(false);
     const [openReceiveState, setOpenReceiveState] = React.useState(false);
+    const {windowWidth, windowHeight}=getWindowDimensions();
     document.body.style.backgroundColor = "#BDC3C7";
     const appId="3fJo4YOfynXdzjfLh29lnHSQY5ISVX3CfuXkEgYu";
     const serverUrl = "https://rb23g45mqtnd.moralishost.com:2053/server";
 
     async function walletConnectLogIn(){
+        if(isMobile){
         await authenticate({ 
             provider: "walletconnect", 
             mobileLinks: [
@@ -32,8 +35,11 @@ const App = () => {
               "trust",
               "imtoken",
               "pillar",
-            ] 
+            ]
         })
+        }else{
+            await authenticate();
+        }
     }
       
   const handleOpenPay = () => {
@@ -60,7 +66,13 @@ const App = () => {
   const handleCloseReceive = () => {
     setOpenReceiveState(false);
   };
-
+  function getWindowDimensions() {
+    const { innerWidth: width, innerHeight: height } = window;
+    return {
+      width,
+      height
+    };
+  }
   /*async function getTokenPrice(address, chain, exchange){
             //Get token price on PancakeSwap v2 BSC
             const options = {
@@ -87,7 +99,7 @@ const App = () => {
             const userTransactions = await Moralis.Web3API.account.getTokenTransfers(transOptions);
             //const bnbPrice = getTokenPrice('0xB8c77482e45F1F44dE1745F52C74426C631bDD52', 'bsc','PancakeSwapv2');
             seTokens(tokensList);
-            setBalance((parseFloat(accounts.balance).toFixed(2)));
+            //setBalance((parseFloat(accounts.balance).toFixed(2)));
             setTransactions(userTransactions.result);
        }
        getNativeBal();
@@ -98,17 +110,16 @@ const App = () => {
             mx: 'auto',
             bgcolor: '#E5E7E9',
             color: '#000',
-            width: '100%',
-            maxWidth:'500px',
-            minWidth:'400px',
+            maxWidth:windowWidth+'px',
+            minWidth:windowHeight+'px',
             p: 1,
             m: 1,
             textAlign: 'center',
             borderRadius:'30px'
           }}>
           <div>
-            <img src={logo} alt="Logo" style={{width:'30px', marginBottom:'-10px'}}/>
-            <h2 style={{margin:'10px'}}>DecentPay</h2>
+            
+            <h2 style={{margin:'10px'}}><img src={logo} alt="Logo" style={{width:'35px', marginBottom:'-10px'}}/>DecentPay</h2>
           </div>
           {isAuthenticated?
           <div>
@@ -124,8 +135,8 @@ const App = () => {
                 }}>
                 {user.get('ethAddress')}
             </Box>
-            <h1>${balance} USD</h1>
-            <h5 style={{paddingBottom:'10px', fontWeight:300}}>{nativeBalance} BNB</h5>           
+            
+            <h3 style={{paddingBottom:'10px', fontWeight:600}}>{nativeBalance} BNB</h3>           
             <Box>
                 <Button style={buttonStyle} onClick={()=>handleOpenPay()}>Pay</Button>
                 <Button style={buttonStyle} onClick={()=>handleOpenSwap()}>Swap</Button>

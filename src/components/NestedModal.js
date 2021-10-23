@@ -55,17 +55,17 @@ export default function NestedModal(prop) {
     <React.Fragment>
       <Modal
         open={prop.open}
-        onClose={()=>prop.handleClose()}
         shouldCloseOnOverlayClick={false}
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
       >
-        <Box sx={{ ...style, width: 400, height:'90%'}}>
+        <Box sx={{ ...style, width: '65%', height:'90%'}}>
           <h2 id="parent-modal-title">{prop.title}</h2>
           <p id="parent-modal-description">
             Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
           </p>
           <ChildModal />
+          <Button onClick={()=>prop.handleClose()}>Close</Button>
         </Box>
       </Modal>
     </React.Fragment>
