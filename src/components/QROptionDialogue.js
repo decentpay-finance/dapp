@@ -8,8 +8,8 @@ import Dialog from '@mui/material/Dialog';
 import { IconButton } from '@mui/material';
 import NestedModal from './NestedModal';
 import { QrCode } from '@mui/icons-material';
-import QRCode from "react-qr-code";
-import QrReader from 'react-qr-reader-es6';
+import QRDisplay from './QRDisplay';
+import QRScanner from './QRSCanner';
 
 const actions = ['Scan Barcode To Start', 'Show Address QR'];
 function SimpleDialog(props) {
@@ -98,12 +98,18 @@ const handleCloseScan = () => {
         openAddress={handleOpenAddress}
         openScan={handleOpenScan}
       />
-    <NestedModal open={openScanState} handleClose={()=>handleCloseScan()} title="Scan Barcode To Start" content={
-    <QrReader delay={300}
-          onError={handleError}
-          onScan={handleScan}
-          style={{ width: '100%', borderRadius:'20px', margin:'0px 0px 50px 0px'}}/>}/>
-    <NestedModal open={openAddressState} handleClose={()=>handleCloseAddress()} title="Show Address QR" content={<QRCode size={310} value={user?user.get('ethAddress'):""} style={{ width: '100%', borderRadius:'20px', margin:'0px 0px 50px 0px'}} />}/>
+    <NestedModal 
+    open={openScanState} 
+    handleClose={()=>handleCloseScan()} 
+    title="Scan Barcode To Start" 
+    content={<QRScanner handleError={handleError} handleScan={handleScan} />} />
+
+    <NestedModal 
+    open={openAddressState} 
+    handleClose={()=>handleCloseAddress()} 
+    title="Show Address QR" 
+    content={<QRDisplay user={user} />}/>
     </div>
   );
 }
+

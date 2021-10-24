@@ -12,6 +12,8 @@ import {isMobile} from 'react-device-detect';
 import StringUtil from './utils/StringUtil';
 import { Fab } from '@mui/material';
 import QROptionDialogue from './components/QROptionDialogue';
+import QRDisplay from './components/QRDisplay';
+import QRScanner from './components/QRSCanner';
 const App = () => {
     //const [balance, setBalance] = useState('0.0');  
     const [nativeBalance , setNativeBalance] = useState('0.0');  
@@ -133,8 +135,8 @@ const App = () => {
             <Box>
                 <Button style={buttonStyle} onClick={()=>handleOpenPay()}>Pay Merchant</Button>
                 <Button style={buttonStyle} onClick={()=>handleOpenReceive()}>Request Payment</Button>                
-                <NestedModal open={openPayState} handleClose={()=>handleClosePay()} title="Pay"/>
-                <NestedModal open={openReceiveState} handleClose={()=>handleCloseReceive()} title="Receive"/>
+                <NestedModal open={openPayState} handleClose={()=>handleClosePay()} title="Pay" content={<QRScanner user={user}/>}/>
+                <NestedModal open={openReceiveState} handleClose={()=>handleCloseReceive()} title="Receive" content={<QRDisplay />}/>
             </Box>
             <Box sx={{
                 mx: 'auto',
@@ -144,7 +146,7 @@ const App = () => {
                 m: 1,
                 textAlign: 'center',
                 borderRadius:'30px',
-    boxShadow: "1px 3px 60px #BDC3C7"}}>
+                boxShadow: "1px 3px 60px #BDC3C7"}}>
                 <BasicTabs tokens={tokens} transactions={transactions} user={user}/>
             </Box>
           </div>

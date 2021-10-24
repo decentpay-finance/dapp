@@ -9,8 +9,8 @@ import Moralis from "moralis";
 import AssetOptionDialogue from './AssetOptionDialogue';
 import React from 'react';
 
-function AssetList(props) { 
-    console.log(props.tokens);
+function SelectPayAsset(props) { 
+
     return (
         <Container fixed>
             <List sx={{width: '100%'}}>
@@ -20,7 +20,7 @@ function AssetList(props) {
                         const {name,symbol,decimals,balance }=token;
                         const bal = Moralis.Units.FromWei(balance, decimals);
                         return(
-                            <ListItem kay={index}style={{borderBottom:'1px solid #D7DBDD'}}>
+                            <ListItem style={{borderBottom:'1px solid #D7DBDD'}}>
                             <ListItemAvatar>
                             <Avatar>
                                 <ImageIcon />
