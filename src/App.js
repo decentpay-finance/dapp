@@ -10,8 +10,8 @@ import NestedModal from './components/NestedModal';
 import BasicTabs from './components/TabPanel';
 import {isMobile} from 'react-device-detect';
 import StringUtil from './utils/StringUtil';
-import { QrCode } from '@mui/icons-material';
 import { Fab } from '@mui/material';
+import QROptionDialogue from './components/QROptionDialogue';
 const App = () => {
     //const [balance, setBalance] = useState('0.0');  
     const [nativeBalance , setNativeBalance] = useState('0.0');  
@@ -96,6 +96,7 @@ const App = () => {
        getNativeBal();
     }
   }, [isAuthenticated,user]);
+  console.log(user);
     return (
         <Box  sx={{
             mx: 'auto',
@@ -110,7 +111,7 @@ const App = () => {
           }}>
           <div>
           <Fab aria-label="add" size="small" style={{marginTop:'0px', position:'relative', float:'right', backgroundColor:'#F2F3F4', padding:'0px'}}>
-            <QrCode />
+            <QROptionDialogue user={user} title="QR Options"/>
             </Fab>
             <h5 style={{margin:'0px 01px 10px 0px'}}><img src={logo} alt="Logo" style={{width:'30px', marginBottom:'-10px'}}/>DecentPay</h5>
           </div>

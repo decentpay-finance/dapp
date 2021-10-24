@@ -16,7 +16,7 @@ const style = {
   boxShadow: 24,
   pt: 2,
   px: 4,
-  pb: 3,
+  pb: 3, 
 };
 
 function ChildModal() {
@@ -59,13 +59,10 @@ export default function NestedModal(prop) {
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
       >
-        <Box sx={{ ...style, width: '65%', height:'90%'}}>
+        <Box sx={{ ...style}}>
           <h2 id="parent-modal-title">{prop.title}</h2>
-          <p id="parent-modal-description">
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </p>
-          <ChildModal />
-          <Button onClick={()=>prop.handleClose()}>Close</Button>
+          {prop.content}
+          <Button variant='contained' onClick={()=>prop.handleClose()} style={{borderRadius:'20px'}}>Close</Button>
         </Box>
       </Modal>
     </React.Fragment>
