@@ -10,6 +10,8 @@ import NestedModal from './components/NestedModal';
 import BasicTabs from './components/TabPanel';
 import {isMobile} from 'react-device-detect';
 import StringUtil from './utils/StringUtil';
+import { QrCode } from '@mui/icons-material';
+import { Fab } from '@mui/material';
 const App = () => {
     //const [balance, setBalance] = useState('0.0');  
     const [nativeBalance , setNativeBalance] = useState('0.0');  
@@ -17,8 +19,6 @@ const App = () => {
     const [transactions , setTransactions] = useState();  
     const { authenticate, isAuthenticated, user} = useMoralis();
     const [openPayState, setOpenPayState] = React.useState(false);
-    const [openSwapState, setOpenSwapState] = React.useState(false);
-    const [openSendState, setOpenSendState] = React.useState(false);
     const [openReceiveState, setOpenReceiveState] = React.useState(false);
     const {windowWidth, windowHeight}=getWindowDimensions();
     document.body.style.backgroundColor = "#BDC3C7";
@@ -48,18 +48,6 @@ const App = () => {
   };
   const handleClosePay = () => {
     setOpenPayState(false);
-  };
-  const handleOpenSwap = () => {
-    setOpenSwapState(true);
-  };
-  const handleCloseSwap = () => {
-    setOpenSwapState(false);
-  };
-  const handleOpenSend = () => {
-    setOpenSendState(true);
-  };
-  const handleCloseSend = () => {
-    setOpenSendState(false);
   };
   const handleOpenReceive = () => {
     setOpenReceiveState(true);
@@ -121,34 +109,31 @@ const App = () => {
             borderRadius:'30px'
           }}>
           <div>
-            
-            <h2 style={{margin:'10px'}}><img src={logo} alt="Logo" style={{width:'35px', marginBottom:'-10px'}}/>DecentPay</h2>
+          <Fab aria-label="add" size="small" style={{marginTop:'0px', position:'relative', float:'right', backgroundColor:'#F2F3F4', padding:'0px'}}>
+            <QrCode />
+            </Fab>
+            <h5 style={{margin:'0px 01px 10px 0px'}}><img src={logo} alt="Logo" style={{width:'30px', marginBottom:'-10px'}}/>DecentPay</h5>
           </div>
           {isAuthenticated?
           <div>
                 <Box  sx={{
-                    mx: 'auto',
-                    bgcolor: '#F8F9F9',
+                    bgcolor: '#E5E7E9',
                     color: '#000',
-                    p: 1,
-                    m: 1,
+                    padding: '0px 0px 5px 0px',
                     textAlign: 'center',
                     borderRadius:'30px',
                     boxShadow: "1px 3px 60px #BDC3C7",
+                    margin:'0px 50px 0px 50px'
                 }}>
-                {'Address: ' + StringUtil.shortenWallet(user.get('ethAddress'))}
+                {'Address: ' + StringUtil.shortenWallet(user.get('ethAddress'))} 
             </Box>
             
             <h3 style={{paddingBottom:'10px', fontWeight:600}}>{nativeBalance} BNB</h3>           
             <Box>
-                <Button style={buttonStyle} onClick={()=>handleOpenPay()}>Pay</Button>
-                <Button style={buttonStyle} onClick={()=>handleOpenSwap()}>Swap</Button>
-                <Button style={buttonStyle} onClick={()=>handleOpenSend()}>Send</Button>
-                <Button style={buttonStyle} onClick={()=>handleOpenReceive()}>Receive</Button>                
-                <NestedModal open={openPayState} handleClose={handleClosePay} title="Pay"/>
-                <NestedModal open={openSwapState} handleClose={handleCloseSwap} title="Swap"/>
-                <NestedModal open={openSendState} handleClose={handleCloseSend} title="Send"/>
-                <NestedModal open={openReceiveState} handleClose={handleCloseReceive} title="Receive"/>
+                <Button style={buttonStyle} onClick={()=>handleOpenPay()}>Pay Merchant</Button>
+                <Button style={buttonStyle} onClick={()=>handleOpenReceive()}>Request Payment</Button>                
+                <NestedModal open={openPayState} handleClose={()=>handleClosePay()} title="Pay"/>
+                <NestedModal open={openReceiveState} handleClose={()=>handleCloseReceive()} title="Receive"/>
             </Box>
             <Box sx={{
                 mx: 'auto',

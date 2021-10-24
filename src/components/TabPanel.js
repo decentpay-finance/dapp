@@ -69,8 +69,7 @@ export default function BasicTabs(prop) {
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" centered>
           <Tab label="Activity" {...a11yProps(0)} style={tabStyle} />
           <Tab label="Assets" {...a11yProps(1)} style={tabStyle}/>
-          <Tab label="Trading" {...a11yProps(2)} style={tabStyle}/>
-          <Tab label="Account" {...a11yProps(3)} style={tabStyle}/>
+          <Tab label="Account" {...a11yProps(2)} style={tabStyle}/>
         </Tabs>
       </Box>
       <TabPanel value={value} index={0} style={{height:'400px', width:width+'px',overflow: 'scroll'}} >
@@ -79,10 +78,7 @@ export default function BasicTabs(prop) {
       <TabPanel value={value} index={1} style={{height:'400px', width:width+'px',overflow: 'scroll'}}>
         <AssetList tokens={prop.tokens}/>
       </TabPanel>
-      <TabPanel value={value} index={2} style={{height:'400px', width:width+'px'}}>
-        <h2>Coming Soon</h2>
-      </TabPanel>
-      <TabPanel value={value} index={3} style={{height:'400px'}}>
+      <TabPanel value={value} index={2} style={{height:'400px'}}>
         <Button variant="contained" onClick={()=>logout()}>Logout</Button>
       </TabPanel>
     </Box>

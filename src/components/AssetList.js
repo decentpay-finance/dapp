@@ -6,8 +6,11 @@ import ListItemText from '@mui/material/ListItemText';
 import ImageIcon from '@mui/icons-material/Image';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Moralis from "moralis";
+import AssetOptionDialogue from './AssetOptionDialogue';
+import React from 'react';
 
 function AssetList(props) { 
+
     return (
         <Container fixed>
             <List sx={{width: '100%'}}>            
@@ -24,12 +27,13 @@ function AssetList(props) {
                             </Avatar>
                             </ListItemAvatar>
                             <ListItemText primary={name.concat(" " + symbol)} secondary={bal} />
+                            <AssetOptionDialogue title={name}/>
                             </ListItem>
                         );
                         })
                     ):<div />
                 }
-            </List>
+            </List>            
         </Container>
     );
 }
