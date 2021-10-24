@@ -26,6 +26,7 @@ export default function QRScanner(props) {
     const [tokenList, setTokensList] = useState();    
     const [reloadToken, setReloadToken] = useState(false);
     const [tokenSymbol, setTokenSymbol] = useState('');
+    const [tokenAddress, setTokenAddress] = useState('');
 
     const [walletToPay, setWalletToPay] = useState('');
     async function loadTokenList(props){
@@ -82,15 +83,31 @@ export default function QRScanner(props) {
                 <Button style={{display:"block"}} onClick={()=>handleScan('ethereum:0xeF175A26D5d4CF8d93b275F7B8b84d624Cb0FAe0')}>Standard</Button>
                 <Button style={{display:"none"}} onClick={()=>handleScan('static:wallet:symbol:station')}>Static</Button>
                 <Button style={{display:"none"}} onClick={()=>handleScan('dynamic:wallet:symbol:station:O-orderid:P-promocode')}>Dynamic</Button>
-                <SimplePay open={paymentMode===1} handleClose={()=>handleClose()} user={props.user} tokenList={tokenList} walletToPay={walletToPay} tokenSymbol={tokenSymbol} setTokenSymbol={setTokenSymbol}/>
-                <StaticPay open={paymentMode===2} handleClose={()=>handleClose()} user={props.user} tokenList={tokenList} walletToPay={walletToPay} tokenSymbol={tokenSymbol} setTokenSymbol={setTokenSymbol}/>
-                <DynamicPay open={paymentMode===3} handleClose={()=>handleClose()} user={props.user} tokenList={tokenList} walletToPay={walletToPay} tokenSymbol={tokenSymbol} setTokenSymbol={setTokenSymbol}/>
+                <SimplePay open={paymentMode===1} handleClose={()=>handleClose()} user={props.user} tokenList={tokenList} walletToPay={walletToPay} tokenSymbol={tokenSymbol} setTokenSymbol={setTokenSymbol} tokenAddress={tokenAddress} setTokenAddress={setTokenAddress}/>
+                <StaticPay open={paymentMode===2} handleClose={()=>handleClose()} user={props.user} tokenList={tokenList} walletToPay={walletToPay} tokenSymbol={tokenSymbol} setTokenSymbol={setTokenSymbol} tokenAddress={tokenAddress} setTokenAddress={setTokenAddress}/>
+                <DynamicPay open={paymentMode===3} handleClose={()=>handleClose()} user={props.user} tokenList={tokenList} walletToPay={walletToPay} tokenSymbol={tokenSymbol} setTokenSymbol={setTokenSymbol} tokenAddress={tokenAddress} setTokenAddress={setTokenAddress}/>
             </Box>
         </React.Fragment>
     )
   }
+async function getTokenPrice(address){
+    const options = {
+        address: address,
+        chain: "bsc"
+    };
+    const price = await Moralis.Web3API.token.getTokenPrice(options);
+    return price;
+}
+
 
   function SimplePay(props){
+    const[price,setPrice] = useState(0.0);
+    async function queryPrice(){
+        const tokenPrice = await getTokenPrice(props.tokenAddress);
+        console.log(tokenPrice.usdPrice.toFixed(5));
+        setPrice(tokenPrice.usdPrice.toFixed(5));
+
+    }
     return (
         <Modal open={props.open}
             onClose={()=>props.handleClose()}>
@@ -98,7 +115,7 @@ export default function QRScanner(props) {
                 <h3>Standard Crypto Payment</h3>
                 <p>Paying to:: <b>{StringUtil.shortenWallet(props.walletToPay)}</b></p>
                 <h5>Select token to Pay</h5>
-                <SelectAssetList tokens={props.tokenList} setTokenSymbol={props.setTokenSymbol}/>
+                <SelectAssetList tokens={props.tokenList} setTokenSymbol={props.setTokenSymbol} setTokenAddress={props.setTokenAddress} queryPrice={queryPrice}/>
                 <div>
                 <p>Enter Amount <b>{props.tokenSymbol}</b> to Pay</p>
                 <TextField
@@ -110,6 +127,7 @@ export default function QRScanner(props) {
                 }}
                 style={{margin:'0px 40px 0px 40px'}}
                 />
+                <p><b>{props.tokenSymbol}</b> price is <b>{price}</b></p>
                 <p>or Enter Amount BUSD to Pay</p>
                 <TextField
                 size="small"
@@ -153,9 +171,11 @@ export default function QRScanner(props) {
 
   function SelectAssetList(props){
     
-    function select(element,name){
+    function select(tokenAddress,name){
         //alert(name);
         props.setTokenSymbol(name);
+        props.setTokenAddress(tokenAddress);
+        props.queryPrice();
     }
     return (
         <Container fixed>
@@ -163,10 +183,10 @@ export default function QRScanner(props) {
                 {props.tokens?(
                     props.tokens.map((token, index)=>{
                         //console.log(token)
-                        const {name,symbol,decimals,balance }=token;
+                        const {name,symbol,decimals,balance,token_address}=token;
                         const bal = Moralis.Units.FromWei(balance, decimals);
                         return(
-                            <ListItem key={index} style={{borderBottom:'1px solid #D7DBDD'}} onClick={()=>select(this, name)} >
+                            <ListItem key={index} style={{borderBottom:'1px solid #D7DBDD'}} onClick={()=>select(token_address, name)} >
                             <ListItemAvatar>
                             <Avatar>
                                 <ImageIcon />
