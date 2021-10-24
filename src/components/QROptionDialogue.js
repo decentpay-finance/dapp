@@ -57,8 +57,8 @@ export default function QROptionDialogue(props) {
   const {user} = props;
   const handleScan=(data)=>{
     if (data) {
-      alert(data);
       setScanState(data)
+      alert(scanState);
     }
   }
   const handleError = (err) => {
@@ -103,7 +103,7 @@ const handleCloseScan = () => {
           onError={handleError}
           onScan={handleScan}
           style={{ width: '100%', borderRadius:'20px', margin:'0px 0px 50px 0px'}}/>}/>
-    <NestedModal open={openAddressState} handleClose={()=>handleCloseAddress()} title="Show Address QR" content={<QRCode size={310} value={user?user.get('ethAddress'):""}/>}/>
+    <NestedModal open={openAddressState} handleClose={()=>handleCloseAddress()} title="Show Address QR" content={<QRCode size={310} value={user?user.get('ethAddress'):""} style={{ width: '100%', borderRadius:'20px', margin:'0px 0px 50px 0px'}} />}/>
     </div>
   );
 }

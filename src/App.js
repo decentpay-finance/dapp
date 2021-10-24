@@ -24,7 +24,7 @@ const App = () => {
     document.body.style.backgroundColor = "#BDC3C7";
     const appId="3fJo4YOfynXdzjfLh29lnHSQY5ISVX3CfuXkEgYu";
     const serverUrl = "https://rb23g45mqtnd.moralishost.com:2053/server";
-
+    document.title = "DecentPay Smart DApp"
     async function walletConnectLogIn(){
         if(isMobile){
         await authenticate({ 

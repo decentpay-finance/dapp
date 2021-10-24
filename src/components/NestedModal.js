@@ -8,7 +8,7 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
+  width: '70%',
   bgcolor: 'background.paper',
   //border: '2px solid #000',
   borderRadius:'30px',
@@ -45,6 +45,7 @@ function ChildModal() {
           </p>
           <Button onClick={handleClose}>Close Child Modal</Button>
         </Box>
+        <ChildModal style={{display:'none'}}/>
       </Modal>
     </React.Fragment>
   );
@@ -61,7 +62,7 @@ export default function NestedModal(prop) {
       >
         <Box sx={{ ...style}}>
           <h2 id="parent-modal-title">{prop.title}</h2>
-          {prop.content}
+          <div style={{ margin:'0px 0px 50px 0px'}}>{prop.content}</div>
           <Button variant='contained' onClick={()=>prop.handleClose()} style={{borderRadius:'20px'}}>Close</Button>
         </Box>
       </Modal>
