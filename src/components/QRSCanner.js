@@ -76,7 +76,7 @@ export default function QRScanner(props) {
                 <QrReader 
                     delay={300}
                     onError={handleError}
-                    onScan={()=>handleScan()}
+                    onScan={handleScan}
                     style={{width:'100%', margin:'auto', posistion:'relative'}} />
                 <h4>Scan the QR code to Start payment</h4>
                 <Button style={{display:"none"}} onClick={()=>setReloadToken(1)}>Reload</Button>
