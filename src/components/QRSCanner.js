@@ -11,7 +11,6 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: '70%',
     bgcolor: 'white',
     //border: '2px solid #000',
     borderRadius:'30px',
@@ -32,7 +31,6 @@ export default function QRScanner(props) {
     async function loadTokenList(props){
       const balOptions = { chain: 'bsc', address: props.user.get('ethAddress')}       
       const tokens = await Moralis.Web3API.account.getTokenBalances(balOptions);
-      console.log(tokens);
       setTokensList(tokens);
     }
     useEffect(() => {
@@ -77,10 +75,11 @@ export default function QRScanner(props) {
                     delay={300}
                     onError={handleError}
                     onScan={handleScan}
-                    style={{width:'100%', margin:'auto', posistion:'relative'}} />
+                    resolution={800}
+                    />
                 <h4>Scan the QR code to Start payment</h4>
                 <Button style={{display:"none"}} onClick={()=>setReloadToken(1)}>Reload</Button>
-                <Button style={{display:"none"}} onClick={()=>handleScan('ethereum:0xeF175A26D5d4CF8d93b275F7B8b84d624Cb0FAe0')}>Standard</Button>
+                <Button style={{display:"block"}} onClick={()=>handleScan('ethereum:0xeF175A26D5d4CF8d93b275F7B8b84d624Cb0FAe0')}>Standard</Button>
                 <Button style={{display:"none"}} onClick={()=>handleScan('static:wallet:symbol:station')}>Static</Button>
                 <Button style={{display:"none"}} onClick={()=>handleScan('dynamic:wallet:symbol:station:O-orderid:P-promocode')}>Dynamic</Button>
                 <SimplePay open={paymentMode===1} handleClose={()=>handleClose()} user={props.user} tokenList={tokenList} walletToPay={walletToPay} tokenSymbol={tokenSymbol} setTokenSymbol={setTokenSymbol}/>
@@ -103,6 +102,17 @@ export default function QRScanner(props) {
                 <div>
                 <p>Enter Amount <b>{props.tokenSymbol}</b> to Pay</p>
                 <TextField
+                size="small"
+                id="outlined-number"
+                type="number"
+                InputLabelProps={{
+                    shrink: true,
+                }}
+                style={{margin:'0px 40px 0px 40px'}}
+                />
+                <p>or Enter Amount BUSD to Pay</p>
+                <TextField
+                size="small"
                 id="outlined-number"
                 type="number"
                 InputLabelProps={{
@@ -112,7 +122,7 @@ export default function QRScanner(props) {
                 />
                 </div>
                 <Button variant='contained' color='primary' style={{position:'relative', float:'right', borderRadius:'20px'}}>Confirm</Button>
-                <Button variant='contained' color='primary' style={{position:'relative', borderRadius:'20px'}}>Cancel</Button>
+                <Button variant='contained' color='primary' style={{position:'relative', borderRadius:'20px'}} onClick={()=>props.handleClose()}>Cancel</Button>
             </Box>
         </Modal>
     )

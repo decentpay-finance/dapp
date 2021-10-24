@@ -1,6 +1,6 @@
 import { Avatar, Container, ListItem, ListItemAvatar, ListItemText, List } from "@material-ui/core";
-import { Adjust, CallMade,  CallReceived} from "@mui/icons-material";
-import { IconButton, ListItemButton } from "@mui/material";
+import {  CallMade,  CallReceived} from "@mui/icons-material";
+import AssetOptionDialogue from "./AssetOptionDialogue";
 
 const Transacton = (props) => {
 
@@ -25,11 +25,7 @@ const Transacton = (props) => {
                                 </Avatar>
                                 </ListItemAvatar>
                                 <ListItemText primary={value} secondary={block_timestamp}/>
-                                <ListItemButton>
-                                    <IconButton>
-                                        <Adjust/>
-                                    </IconButton>
-                                </ListItemButton>
+                                <AssetOptionDialogue title={value}/>
                                 </ListItem>
                             );
                         }else{

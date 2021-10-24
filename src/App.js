@@ -112,9 +112,9 @@ const App = () => {
             borderRadius:'30px'
           }}>
           <div>
-          <Fab aria-label="add" size="small" style={{marginTop:'0px', position:'relative', float:'right', backgroundColor:'#F2F3F4', padding:'0px'}}>
+          <Fab aria-label="add" size="small" style={{marginTop:'0px', borderRadius:'20px', position:'relative', float:'right', backgroundColor:'#F2F3F4', padding:'0px'}}>
             <QROptionDialogue user={user} title="QR Options"/>
-            </Fab>
+          </Fab>
             <h5 style={{margin:'0px 01px 10px 0px'}}><img src={logo} alt="Logo" style={{width:'30px', marginBottom:'-10px'}}/>DecentPay</h5>
           </div>
           {isAuthenticated?
