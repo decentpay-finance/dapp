@@ -59,18 +59,18 @@ export default function BasicTabs(prop) {
     <Box sx={{ width: '100%'}}>
       <Box sx={{ borderBottom: 2, borderColor: 'white' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" centered>
-          <Tab label="Activity" {...a11yProps(0)} style={tabStyle} />
-          <Tab label="Assets" {...a11yProps(1)} style={tabStyle}/>
+          <Tab label="Assets" {...a11yProps(0)} style={tabStyle}/>
+          <Tab label="Activity" {...a11yProps(1)} style={tabStyle} />
           <Tab label="Account" {...a11yProps(2)} style={tabStyle}/>
         </Tabs>
       </Box>
-      <TabPanel value={value} index={0} style={{height:'490px',overflow: 'auto'}} >
-        <Transacton transactions={prop.transactions} user={user} style={{padding:'0px'}}/>
-      </TabPanel>
-      <TabPanel value={value} index={1} style={{height:'490px',overflow: 'auto'}}>
+      <TabPanel value={value} index={0} style={{height:'500px', overflow: 'auto'}}>
         <AssetList tokens={prop.tokens}/>
       </TabPanel>
-      <TabPanel value={value} index={2} style={{height:'490px'}}>
+      <TabPanel value={value} index={1} style={{height:'500px', overflow:'auto'}} >
+        <Transacton transactions={prop.transactions} user={user} style={{padding:'0px'}}/>
+      </TabPanel>
+      <TabPanel value={value} index={2} style={{height:'500px'}}>
         <Button variant="contained" onClick={()=>logout()}>Logout</Button>
       </TabPanel>
     </Box>

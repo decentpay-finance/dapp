@@ -22,7 +22,7 @@ function AssetList(props) {
                         const {name,symbol,decimals,balance }=token;
                         const bal = Moralis.Units.FromWei(balance, decimals);
                         return(
-                            <ListItem kay={index}style={{borderBottom:'1px solid #D7DBDD'}}>
+                            <ListItem kay={index} style={{ backgroundColor:'#007278', opacity: '0.9', marginBottom:'4px', borderRadius:'10px', color:'#95FAFF', padding:'3px 5px 3px 10px'}}>
                             <ListItemAvatar size="small" >
                             <Avatar>
                                 <ImageIcon/>

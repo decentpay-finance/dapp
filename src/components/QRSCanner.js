@@ -13,7 +13,7 @@ const style = {
     transform: 'translate(-50%, -50%)',
     bgcolor: 'white',
     width:'380px',
-    borderRadius:'320px',
+    borderRadius:'30px',
     boxShadow: 24,
     pt: 2,
     px: 4,
@@ -80,8 +80,8 @@ export default function QRScanner(props) {
                     />
                 <h4>Scan the QR code to Start payment</h4>
                 <Button style={{display:"none", margin:'10px', borderRadius:'20px'}} onClick={()=>setReloadToken(1)}>Reload</Button>
-                <Button style={{display:"none", margin:'10px', borderRadius:'20px'}} onClick={()=>handleScan('ethereum:0xeF175A26D5d4CF8d93b275F7B8b84d624Cb0FAe0')}>Standard</Button>
-                <Button style={{display:"none", margin:'10px', borderRadius:'20px'}} onClick={()=>handleScan('static:wallet:symbol:station')}>Static</Button>
+                <Button style={{display:"block", margin:'10px', borderRadius:'20px'}} onClick={()=>handleScan('ethereum:0xeF175A26D5d4CF8d93b275F7B8b84d624Cb0FAe0')}>Standard</Button>
+                <Button style={{display:"block", margin:'10px', borderRadius:'20px'}} onClick={()=>handleScan('static:wallet:symbol:station')}>Static</Button>
                 <Button style={{display:"none", margin:'10px', borderRadius:'20px'}} onClick={()=>handleScan('dynamic:wallet:symbol:station:O-orderid:P-promocode')}>Dynamic</Button>
                 <SimplePay open={paymentMode===1} handleClose={()=>handleClose()} user={props.user} tokenList={tokenList} walletToPay={walletToPay} tokenSymbol={tokenSymbol} setTokenSymbol={setTokenSymbol} tokenAddress={tokenAddress} setTokenAddress={setTokenAddress}/>
                 <StaticPay open={paymentMode===2} handleClose={()=>handleClose()} user={props.user} tokenList={tokenList} walletToPay={walletToPay} tokenSymbol={tokenSymbol} setTokenSymbol={setTokenSymbol} tokenAddress={tokenAddress} setTokenAddress={setTokenAddress}/>

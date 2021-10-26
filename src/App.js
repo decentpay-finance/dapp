@@ -133,9 +133,8 @@ const App = () => {
             </Box>
           </div>
         </Box>        
-        <Box sx={{
+        <Box  className="homeTab" sx={{
                 mx: 'auto',
-                bgcolor: '#F2F3F4',
                 color: '#000',
                 p: 1,
                 margin:'-30px 20px 20px 20px',

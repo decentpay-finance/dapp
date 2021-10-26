@@ -13,3 +13,7 @@ body {
   background-image: url("./img/head-bg2.jpg");
   background-size: auto;
 }
+.homeTab {
+  background-image: url("./img/tab-bg.jpg");
+  background-size: auto;
+}
