@@ -8,12 +8,8 @@ body {
   background-color: red;
   background-image: url("./img/logo2.jpg");
   background-size: auto;
-  background-attachment: fixed;
-  background-size: contain;
 }
 .headerInfo {
   background-image: url("./img/head-bg2.jpg");
   background-size: auto;
-  background-attachment: fixed;
-  background-size: contain;
 }
