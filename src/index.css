@@ -17,3 +17,6 @@ body {
   background-image: url("./img/tab-bg.jpg");
   background-size: auto;
 }
+.listItems {
+  background-image: url("./img/list-bg.jpeg");
+}
