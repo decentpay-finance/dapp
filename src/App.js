@@ -109,7 +109,7 @@ const App = () => {
             <Box className="headerInfo" style={{
               color: '#000',
               height:'190px',
-              margin:'5px 20px 10px 20px',
+              margin:'5px 10px 10px 10px',
               textAlign: 'center',
               borderRadius:'30px 30px 0px 0px',
               boxShadow: "1px 3px 20px #000",
@@ -118,7 +118,7 @@ const App = () => {
               <Fab aria-label="add" size="small" style={{margin:'10px', borderRadius:'20px', position:'relative', float:'right', backgroundColor:'#F2F3F4', padding:'0px'}}>
                 <QROptionDialogue user={user} title="QR Options"/>
               </Fab>
-              <h5 style={{margin:'0px 01px 10px 0px'}}><img src={logo} alt="Logo" style={{width:'30px', marginBottom:'-10px'}}/>DecentPay</h5>
+              <h5 style={{margin:'0px 01px 10px 0px', color:'#FFF', fontWeight:'400'}}><img src={logo} alt="Logo" style={{width:'30px', marginBottom:'-10px'}}/>DecentPay</h5>
             </div>
           <div>
             
@@ -134,10 +134,10 @@ const App = () => {
           </div>
         </Box>        
         <Box  className="homeTab" sx={{
-                mx: 'auto',
+                
                 color: '#000',
-                p: 1,
-                margin:'-30px 20px 20px 20px',
+                
+                margin:'-30px 10px 10px 10px',
                 textAlign: 'center',
                 borderRadius:'20px 20px 20px 20px',
                 boxShadow: "1px 3px 20px #000"}}>

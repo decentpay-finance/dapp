@@ -13,7 +13,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 function AssetList(props) { 
     console.log(props.tokens);
     return (
-        <Container fixed>
+        <Container fixed style={{padding:'0px', margin:'0px'}}>
             <List sx={{width: '100%', overflow:'auto'}}>
         <PerfectScrollbar component="div" handlers={'touch'}>
                 {props.tokens?(

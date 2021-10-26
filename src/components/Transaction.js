@@ -5,7 +5,7 @@ import AssetOptionDialogue from "./AssetOptionDialogue";
 const Transacton = (props) => {
 
     return (
-        <Container fixed>
+        <Container fixed style={{padding:'0px', margin:'0px'}}>
             <List sx={{width: '100%', overflow: 'auto'}}>            
                 {props.transactions?(
                     props.transactions.map((transaction, index)=>{

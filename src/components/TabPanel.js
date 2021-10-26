@@ -56,7 +56,7 @@ export default function BasicTabs(prop) {
     };
    
   return (
-    <Box sx={{ width: '100%'}}>
+    <Box sx={{ width: '100%', padding:'0px'}}>
       <Box sx={{ borderBottom: 2, borderColor: 'white' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" centered>
           <Tab label="Assets" {...a11yProps(0)} style={tabStyle}/>
@@ -64,10 +64,10 @@ export default function BasicTabs(prop) {
           <Tab label="Account" {...a11yProps(2)} style={tabStyle}/>
         </Tabs>
       </Box>
-      <TabPanel value={value} index={0} style={{height:'500px', overflow: 'auto'}}>
+      <TabPanel value={value} index={0} style={{height:'500px', overflow: 'auto', padding:'0px'}}>
         <AssetList tokens={prop.tokens}/>
       </TabPanel>
-      <TabPanel value={value} index={1} style={{height:'500px', overflow:'auto'}} >
+      <TabPanel value={value} index={1} style={{height:'500px', overflow:'auto', padding:'0px'}} >
         <Transacton transactions={prop.transactions} user={user} style={{padding:'0px'}}/>
       </TabPanel>
       <TabPanel value={value} index={2} style={{height:'500px'}}>
