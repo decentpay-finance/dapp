@@ -9,7 +9,7 @@ import { IconButton } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons/faEllipsisV';
 import NestedModal from './NestedModal';
-const actions = ['Send', 'Receive', 'Swap'];
+const actions = ['Send', 'Receive', 'Swap','Set Default Payment Token','Set Default Receive Token'];
 
 function SimpleDialog(props) {
   const { onClose, selectedValue, open , title, openSwap, openSend, openReceive} = props;
@@ -22,17 +22,19 @@ function SimpleDialog(props) {
         case "Send": openSend(); break;
         case "Receive": openReceive(); break;
         case "Swap": openSwap(); break;
+        case "Set Default Payment Token": openSwap(); break;
+        case "Set Default Receive Token": openSwap(); break;
         default:
         // code block
     }
   };
 
   return (
-    <Dialog onClose={handleClose} open={open}>
+    <Dialog onClose={handleClose} open={open} style={{width:'360px'}}>
     <DialogTitle>{title}</DialogTitle>
-      <List sx={{ pt: 0 }}>
+      <List style={{width:'300px'}}>
         {actions.map((action) => (
-          <ListItem button onClick={() => handleListItemClick(action)} key={action}>
+          <ListItem style={{width:'250px', margin:'5px', borderBottom:'1px solid #E5E7E9', borderRadius:'20px',backgroundColor:'#E5E7E9'}} button onClick={() => handleListItemClick(action)} key={action}>
             <ListItemText primary={action} />
           </ListItem>
         ))}
@@ -54,6 +56,7 @@ export default function AssetOptionDialogue(props) {
   const [openSwapState, setOpenSwapState] = React.useState(false);
   const [openSendState, setOpenSendState] = React.useState(false);
   const [openReceiveState, setOpenReceiveState] = React.useState(false);
+  const [openDefaultState, setOpenDefaultState] = React.useState(false);
   
 
 const handleOpenSwap = () => {
@@ -74,6 +77,14 @@ const handleOpenReceive = () => {
 const handleCloseReceive = () => {
   setOpenReceiveState(false);
 };
+
+const handleOpenDefault = () => {
+  setOpenDefaultState(true);
+};
+const handleCloseDefault = () => {
+  setOpenDefaultState(false);
+};
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -96,10 +107,12 @@ const handleCloseReceive = () => {
         openSwap={handleOpenSwap}
         openSend={handleOpenSend}
         openReceive={handleOpenReceive}
+        openDefault={handleOpenDefault}
       />
     <NestedModal open={openSendState} handleClose={()=>handleCloseSend()} title="Send" />
     <NestedModal open={openSwapState} handleClose={()=>handleCloseSwap()} title="Swap"/>
     <NestedModal open={openReceiveState} handleClose={()=>handleCloseReceive()} title="Receive"/>
+    <NestedModal open={openDefaultState} handleClose={()=>handleCloseDefault()} title="Set Default Receive"/>
     </div>
   );
 }

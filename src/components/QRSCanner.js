@@ -12,8 +12,8 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     bgcolor: 'white',
-    //border: '2px solid #000',
-    borderRadius:'30px',
+    width:'380px',
+    borderRadius:'320px',
     boxShadow: 24,
     pt: 2,
     px: 4,
@@ -69,20 +69,20 @@ export default function QRScanner(props) {
                 color: '#000',
                 textAlign: 'center',
                 borderRadius:'30px',
-                padding: '40px 40px 40px 40px',
+                padding: '1px',
                 boxShadow: "1px 3px 60px #BDC3C7"
             }}>      
                 <QrReader 
                     delay={300}
                     onError={handleError}
                     onScan={handleScan}
-                    resolution={800}
+                    resolution={600}
                     />
                 <h4>Scan the QR code to Start payment</h4>
-                <Button style={{display:"none"}} onClick={()=>setReloadToken(1)}>Reload</Button>
-                <Button style={{display:"block"}} onClick={()=>handleScan('ethereum:0xeF175A26D5d4CF8d93b275F7B8b84d624Cb0FAe0')}>Standard</Button>
-                <Button style={{display:"none"}} onClick={()=>handleScan('static:wallet:symbol:station')}>Static</Button>
-                <Button style={{display:"none"}} onClick={()=>handleScan('dynamic:wallet:symbol:station:O-orderid:P-promocode')}>Dynamic</Button>
+                <Button style={{display:"none", margin:'10px', borderRadius:'20px'}} onClick={()=>setReloadToken(1)}>Reload</Button>
+                <Button style={{display:"none", margin:'10px', borderRadius:'20px'}} onClick={()=>handleScan('ethereum:0xeF175A26D5d4CF8d93b275F7B8b84d624Cb0FAe0')}>Standard</Button>
+                <Button style={{display:"none", margin:'10px', borderRadius:'20px'}} onClick={()=>handleScan('static:wallet:symbol:station')}>Static</Button>
+                <Button style={{display:"none", margin:'10px', borderRadius:'20px'}} onClick={()=>handleScan('dynamic:wallet:symbol:station:O-orderid:P-promocode')}>Dynamic</Button>
                 <SimplePay open={paymentMode===1} handleClose={()=>handleClose()} user={props.user} tokenList={tokenList} walletToPay={walletToPay} tokenSymbol={tokenSymbol} setTokenSymbol={setTokenSymbol} tokenAddress={tokenAddress} setTokenAddress={setTokenAddress}/>
                 <StaticPay open={paymentMode===2} handleClose={()=>handleClose()} user={props.user} tokenList={tokenList} walletToPay={walletToPay} tokenSymbol={tokenSymbol} setTokenSymbol={setTokenSymbol} tokenAddress={tokenAddress} setTokenAddress={setTokenAddress}/>
                 <DynamicPay open={paymentMode===3} handleClose={()=>handleClose()} user={props.user} tokenList={tokenList} walletToPay={walletToPay} tokenSymbol={tokenSymbol} setTokenSymbol={setTokenSymbol} tokenAddress={tokenAddress} setTokenAddress={setTokenAddress}/>
@@ -125,7 +125,6 @@ async function getTokenPrice(address){
                 InputLabelProps={{
                     shrink: true,
                 }}
-                style={{margin:'0px 40px 0px 40px'}}
                 />
                 <p><b>{props.tokenSymbol}</b> price is <b>{price}</b></p>
                 <p>or Enter Amount BUSD to Pay</p>
@@ -136,7 +135,7 @@ async function getTokenPrice(address){
                 InputLabelProps={{
                     shrink: true,
                 }}
-                style={{margin:'0px 40px 40px 40px'}}
+                style={{margin:'0px 0px 0px 0px'}}
                 />
                 </div>
                 <Button variant='contained' color='primary' style={{position:'relative', float:'right', borderRadius:'20px'}}>Confirm</Button>

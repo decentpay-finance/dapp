@@ -15,16 +15,17 @@ const Transacton = (props) => {
                         const avatarColor = direction==='Send'?'`red`':'`blue`';
                         if(value>0){
                             return(
-                                <ListItem style={{borderBottom:'1px solid #D7DBDD'}}>
+                                <ListItem style={{borderBottom:'1px solid #D7DBDD'}} size="small">
                                 <ListItemAvatar>
                                 <Avatar style={{backgroundColor:avatarColor}}>
                                     {direction==='Send'?
+                                    <CallMade/>
+                                    :
                                     <CallReceived/>
-                                    :<CallMade/>
                                 }
                                 </Avatar>
                                 </ListItemAvatar>
-                                <ListItemText primary={value} secondary={block_timestamp}/>
+                                <ListItemText primary={direction} secondary={block_timestamp}/>
                                 <AssetOptionDialogue title={value}/>
                                 </ListItem>
                             );

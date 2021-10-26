@@ -8,12 +8,14 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Moralis from "moralis";
 import AssetOptionDialogue from './AssetOptionDialogue';
 import React from 'react';
-
+import "react-perfect-scrollbar/dist/css/styles.css";
+import PerfectScrollbar from 'react-perfect-scrollbar';
 function AssetList(props) { 
     console.log(props.tokens);
     return (
         <Container fixed>
-            <List sx={{width: '100%'}}>
+            <List sx={{width: '100%', overflow:'auto'}}>
+        <PerfectScrollbar component="div" handlers={'touch'}>
                 {props.tokens?(
                     props.tokens.map((token, index)=>{
                         //console.log(token)
@@ -21,9 +23,9 @@ function AssetList(props) {
                         const bal = Moralis.Units.FromWei(balance, decimals);
                         return(
                             <ListItem kay={index}style={{borderBottom:'1px solid #D7DBDD'}}>
-                            <ListItemAvatar>
+                            <ListItemAvatar size="small" >
                             <Avatar>
-                                <ImageIcon />
+                                <ImageIcon/>
                             </Avatar>
                             </ListItemAvatar>
                             <ListItemText primary={name.concat(" " + symbol)} secondary={bal} />
@@ -33,7 +35,8 @@ function AssetList(props) {
                         })
                     ):<div />
                 }
-            </List>            
+            </PerfectScrollbar>    
+            </List>
         </Container>
     );
 }

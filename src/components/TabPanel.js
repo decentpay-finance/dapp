@@ -42,21 +42,13 @@ function a11yProps(index) {
 }
 const tabStyle={
     textTransform: 'capitalize',
-    backgroundColor:'#F2F3F4',
+    backgroundColor:'#ffffff',
     borderRadius:"20px 20px 0px 0px",
     padding:'0px 2px 0px 2px',
-    margin:"20px 2px 0px 2px",
-    boxShadow: "1px 10px 30px #BDC3C7",
+    margin:"20px 5px 0px 5px",
+    boxShadow: "1px 10px 3px #000",
 }
 export default function BasicTabs(prop) {
-    const {width}=getWindowDimensions();
-  
-    async function getWindowDimensions() {
-      const { innerWidth: width} =  window;
-      return {
-        width,
-      };
-    }
     const {   user, logout} = useMoralis();
     const [value, setValue] = React.useState(0);
     const handleChange = (event, newValue) => {
@@ -72,13 +64,13 @@ export default function BasicTabs(prop) {
           <Tab label="Account" {...a11yProps(2)} style={tabStyle}/>
         </Tabs>
       </Box>
-      <TabPanel value={value} index={0} style={{height:'400px', width:width+'px',overflow: 'scroll'}} >
-        <Transacton transactions={prop.transactions} user={user}/>
+      <TabPanel value={value} index={0} style={{height:'490px',overflow: 'auto'}} >
+        <Transacton transactions={prop.transactions} user={user} style={{padding:'0px'}}/>
       </TabPanel>
-      <TabPanel value={value} index={1} style={{height:'400px', width:width+'px',overflow: 'scroll'}}>
+      <TabPanel value={value} index={1} style={{height:'490px',overflow: 'auto'}}>
         <AssetList tokens={prop.tokens}/>
       </TabPanel>
-      <TabPanel value={value} index={2} style={{height:'400px'}}>
+      <TabPanel value={value} index={2} style={{height:'490px'}}>
         <Button variant="contained" onClick={()=>logout()}>Logout</Button>
       </TabPanel>
     </Box>
