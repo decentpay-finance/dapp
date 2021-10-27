@@ -127,7 +127,7 @@ async function getTokenPrice(address){
     function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
-
+    sleep(1);
     async function payERC20(){
         const tokens = document.getElementById('tokenQty').value;
         const decimals= await getTokenDecimals(props.tokenAddress);
