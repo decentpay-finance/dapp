@@ -145,9 +145,21 @@ const App = () => {
             </Box>
             </div>
           :
-            <Button style={buttonStyle} onClick={()=>walletConnectLogIn()}>
+          <div>
+            <Box className="headerInfo" style={{
+              color: '#000',
+              height:'190px',
+              margin:'5px 10px 10px 10px',
+              textAlign: 'center',
+              borderRadius:'30px 30px 30px 30px',
+              boxShadow: "1px 3px 20px #000",
+            }}>
+              <h5 style={{margin:'0px 01px 10px 0px', color:'#FFF', fontWeight:'400'}}><img src={logo} alt="Logo" style={{width:'30px', marginBottom:'-10px'}}/>DecentPay</h5>
+            <Button variant='contained' onClick={()=>walletConnectLogIn()}>
               Login With Wallet
             </Button>
+            </Box>
+            </div>
           }
         </div>
     )

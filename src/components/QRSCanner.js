@@ -12,7 +12,7 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     bgcolor: 'white',
-    width:'380px',
+    width:'81%',
     borderRadius:'30px',
     boxShadow: 24,
     pt: 2,
@@ -70,7 +70,7 @@ export default function QRScanner(props) {
                 textAlign: 'center',
                 borderRadius:'30px',
                 padding: '1px',
-                boxShadow: "1px 3px 60px #BDC3C7"
+                boxShadow: "1px 3px 20px #BDC3C7"
             }}>      
                 <QrReader 
                     delay={300}
@@ -93,7 +93,8 @@ export default function QRScanner(props) {
 async function getTokenPrice(address){
     const options = {
         address: address,
-        chain: "bsc"
+        chain: "bsc",
+        exchange: "PancakeSwapv2"
     };
     const price = await Moralis.Web3API.token.getTokenPrice(options);
     return price;
@@ -102,44 +103,93 @@ async function getTokenPrice(address){
 
   function SimplePay(props){
     const[price,setPrice] = useState(0.0);
+    useEffect(()=>{
+        if(document.getElementById('priceDisplay')){
+            document.getElementById('priceDisplay').innerText=price;
+        }
+    },[price]);
     async function queryPrice(){
-        const tokenPrice = await getTokenPrice(props.tokenAddress);
-        console.log(tokenPrice.usdPrice.toFixed(5));
-        setPrice(tokenPrice.usdPrice.toFixed(5));
+        try{
+            const tokenPrice = await getTokenPrice(props.tokenAddress);            
+            setPrice(tokenPrice.usdPrice.toFixed(5));
+        }catch(error){
 
+        }
     }
+    
+    async function getTokenDecimals(address){
+        //Get metadata for one token
+        const options = { chain: "bsc", addresses: address };
+        const tokenMetadata = await Moralis.Web3API.token.getTokenMetadata(options);
+        return tokenMetadata[0].decimals;
+    }
+
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function payERC20(){
+        const tokens = document.getElementById('tokenQty').value;
+        const decimals= await getTokenDecimals(props.tokenAddress);
+        const options = {type: "erc20", 
+                 amount: Moralis.Units.Token(tokens, decimals), 
+                 receiver: props.walletToPay,
+                 contractAddress: props.tokenAddress}
+        let result = await Moralis.transfer(options)
+        console.log(result);
+    }
+
+    function handleChange (e) {
+        console.log(e.target.id)
+        console.log(e.target.value)
+        if(e.target.id === "tokenQty"){
+            document.getElementById('usdQty').value=e.target.value * price;
+        }
+        if(e.target.id === "usdQty"){
+            document.getElementById('tokenQty').value=e.target.value / price;
+        }
+        document.getElementById('qtyOfSlectedToken').innerText=parseFloat(document.getElementById('tokenQty').value).toFixed(5);
+        document.getElementById('selectedToken').innerText=props.tokenSymbol;
+    }
+
     return (
         <Modal open={props.open}
             onClose={()=>props.handleClose()}>
-                <Box  sx={{ ...style}}>
+            <Box  sx={{ ...style}}>
                 <h3>Standard Crypto Payment</h3>
                 <p>Paying to:: <b>{StringUtil.shortenWallet(props.walletToPay)}</b></p>
-                <h5>Select token to Pay</h5>
+                <h5>Double-tap to Select Token</h5>
                 <SelectAssetList tokens={props.tokenList} setTokenSymbol={props.setTokenSymbol} setTokenAddress={props.setTokenAddress} queryPrice={queryPrice}/>
                 <div>
-                <p>Enter Amount <b>{props.tokenSymbol}</b> to Pay</p>
-                <TextField
-                size="small"
-                id="outlined-number"
-                type="number"
-                InputLabelProps={{
-                    shrink: true,
-                }}
-                />
-                <p><b>{props.tokenSymbol}</b> price is <b>{price}</b></p>
-                <p>or Enter Amount BUSD to Pay</p>
-                <TextField
-                size="small"
-                id="outlined-number"
-                type="number"
-                InputLabelProps={{
-                    shrink: true,
-                }}
-                style={{margin:'0px 0px 0px 0px'}}
-                />
+                    <p>Enter Amount <b>{props.tokenSymbol}</b> to Pay</p>
+                    <TextField 
+                        size="small"
+                        id="tokenQty"
+                        type="number"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}                        
+                        onChange={handleChange}
+                    />
+                    <p><b>{props.tokenSymbol}</b> price is <b id="priceDisplay">0</b> USD</p>
+                    <p>or enter equivalent of BUSD</p>
+                    
+                    <TextField
+                        size="small"
+                        id="usdQty"
+                        type="number"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        onChange={handleChange}
+                        style={{margin:'0px 0px 0px 0px'}}
+                    />
                 </div>
-                <Button variant='contained' color='primary' style={{position:'relative', float:'right', borderRadius:'20px'}}>Confirm</Button>
-                <Button variant='contained' color='primary' style={{position:'relative', borderRadius:'20px'}} onClick={()=>props.handleClose()}>Cancel</Button>
+                <p>Merchant will receive <b id="qtyOfSlectedToken">0</b> of <b id="selectedToken">selected token</b></p>
+                <Box sx={{paddingTop:'40px'}}>
+                    <Button variant='contained' color='primary' style={{position:'relative', float:'right', borderRadius:'20px'}} onClick={()=>payERC20()}>Confirm</Button>
+                    <Button variant='contained' color='primary' style={{position:'relative', borderRadius:'20px'}} onClick={()=>props.handleClose()}>Cancel</Button>
+                </Box>
             </Box>
         </Modal>
     )
@@ -148,22 +198,21 @@ async function getTokenPrice(address){
     return (
         <Modal open={props.open}
             onClose={()=>props.handleClose()}>
-        <Box  sx={{ ...style}}>
-            <h3>StaticPay</h3>
-            <SelectAssetList tokens={props.tokenList}/>
-        </Box>
+            <Box  sx={{ ...style}}>
+                <h3>StaticPay</h3>
+                <SelectAssetList tokens={props.tokenList}/>
+            </Box>
         </Modal>
     )
-
   }
   function DynamicPay(props){
     return (
         <Modal open={props.open}
             onClose={()=>props.handleClose()}>
-        <Box  sx={{ ...style}}>
-            <h3>DynamicPay</h3>
-            <SelectAssetList tokens={props.tokenList}/>
-        </Box>
+            <Box  sx={{ ...style}}>
+                <h3>DynamicPay</h3>
+                <SelectAssetList tokens={props.tokenList}/>
+            </Box>
         </Modal>
     )
   }
@@ -186,20 +235,19 @@ async function getTokenPrice(address){
                         const bal = Moralis.Units.FromWei(balance, decimals);
                         return(
                             <ListItem key={index} style={{borderBottom:'1px solid #D7DBDD'}} onClick={()=>select(token_address, name)} >
-                            <ListItemAvatar>
-                            <Avatar>
-                                <ImageIcon />
-                            </Avatar>
-                            </ListItemAvatar>
-                            <ListItemText primary={name.concat(" " + symbol)} secondary={bal} />
+                                <ListItemAvatar>
+                                    <Avatar>
+                                        <ImageIcon />
+                                    </Avatar>
+                                </ListItemAvatar>
+                                <ListItemText primary={name.concat(" " + symbol)} secondary={bal} />
                             </ListItem>
-                        );
+                            );
                         })
                     ):<ListItem/>
                 }
             </List>            
         </Container>
     );
-
     
 }
